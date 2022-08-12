@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-var-requires */
+
 const commander = require("commander");
 const dotenvFlow = require("dotenv-flow");
 const path = require("path");
