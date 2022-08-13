@@ -24,7 +24,7 @@ jobs:
     - name: build
       run: npm run build
     - name: install-zip
-      run: sudo apt install -y zip
+      run: sudo apt-get install -y zip
     - name: zip-dist
       run: sudo zip -r dist.zip ./dist/
     - name: upload-dist
@@ -37,5 +37,5 @@ jobs:
         sudo curl -X POST
         -F 'properties.appZipUrl=$FROGGIE_BUILD_ARTIFACT_URL'
         -F 'properties.deploymentTitle=froggie-web.$FROGGIE_VERSION'
-        -F 'properties.provider=github.froggie-_-pr
+        -F 'properties.provider=github.froggie-_-pr'
         https://management.azure.com/subscriptions/217d8454-52dc-44d9-8e58-2abb67f527d6/resourceGroups/froggie/providers/Microsoft.Web/staticSites/froggie-web/zipdeploy?api-version=2022-03-01
