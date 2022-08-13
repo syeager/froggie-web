@@ -10,13 +10,32 @@ jobs:
     steps:
     - name: env-FROGGIE_VERSION
       run: echo "FROGGIE_VERSION=1.0.0-$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
-    - name: env-FROGGIE_PACKAGE_NAME
-      run: echo "FROGGIE_PACKAGE_NAME=$FROGGIE_ARTIFACT_REPO/froggie-web/froggie:ci" >> $GITHUB_ENV
+    - name: env-FROGGIE_BUILD_ARTIFACT_URL
+      run: echo "FROGGIE_BUILD_ARTIFACT_URL=https://steveyeager.jfrog.io/artifactory/build-artifacts/froggie/web/dist-$FROGGIE_VERSION.zip" >> $GITHUB_ENV
     - name: print_env
       run: env | grep FROGGIE_ | sort
+    - name: install-node
+      uses: actions/setup-node@v3.4.1
+      with:
+        node-version: 16.15.1
     - uses: actions/checkout@v3
     - name: download-packages
       run: npm update
     - name: build
       run: npm run build
-      
+    - name: install-zip
+      run: sudo apt install -y zip
+    - name: zip-dist
+      run: sudo zip -r dist.zip ./dist/
+    - name: upload-dist
+      run: >
+        curl -H "X-JFrog-Art-Api:AKCp8mZwWPU5jHYZwGYTKTpgXHLpJ2hrX3QwZXaLmoF7v8yx2UJguZCVRLpuLcDsK4jNNfMAB"
+        -T ./dist.zip
+        $FROGGIE_BUILD_ARTIFACT_URL
+    - name: deploy
+      run: >
+        sudo curl -X POST
+        -F 'properties.appZipUrl=$FROGGIE_BUILD_ARTIFACT_URL'
+        -F 'properties.deploymentTitle=froggie-web.$FROGGIE_VERSION'
+        -F 'properties.provider=github.froggie-_-pr
+        https://management.azure.com/subscriptions/217d8454-52dc-44d9-8e58-2abb67f527d6/resourceGroups/froggie/providers/Microsoft.Web/staticSites/froggie-web/zipdeploy?api-version=2022-03-01
