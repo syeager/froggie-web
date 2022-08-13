@@ -14,6 +14,10 @@ jobs:
       run: echo "FROGGIE_BUILD_ARTIFACT_URL=https://steveyeager.jfrog.io/artifactory/build-artifacts/froggie/web/dist-$FROGGIE_VERSION.zip" >> $GITHUB_ENV
     - name: print_env
       run: env | grep FROGGIE_ | sort
+    - name: Azure CLI Action
+      run: sudo az login
+    - name: token
+      run: sudo az account get-access-token --resource https://management.azure.com/subscriptions/217d8454-52dc-44d9-8e58-2abb67f527d6/resourceGroups/froggie/providers/Microsoft.Web/staticSites/froggie-web
     - name: install-node
       uses: actions/setup-node@v3.4.1
       with:
@@ -39,3 +43,4 @@ jobs:
         -F 'properties.deploymentTitle=froggie-web.$FROGGIE_VERSION'
         -F 'properties.provider=github.froggie-_-pr'
         https://management.azure.com/subscriptions/217d8454-52dc-44d9-8e58-2abb67f527d6/resourceGroups/froggie/providers/Microsoft.Web/staticSites/froggie-web/zipdeploy?api-version=2022-03-01
+    
