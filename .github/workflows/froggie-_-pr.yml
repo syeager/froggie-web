@@ -1,0 +1,22 @@
+name: froggie-_-pr
+
+on:
+  pull_request:
+    branches: "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: env-FROGGIE_VERSION
+      run: echo "FROGGIE_VERSION=1.0.0-$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+    - name: env-FROGGIE_PACKAGE_NAME
+      run: echo "FROGGIE_PACKAGE_NAME=$FROGGIE_ARTIFACT_REPO/froggie-web/froggie:ci" >> $GITHUB_ENV
+    - name: print_env
+      run: env | grep FROGGIE_ | sort
+    - uses: actions/checkout@v3
+    - name: download-packages
+      run: npm update
+    - name: build
+      run: npm run build
+      
