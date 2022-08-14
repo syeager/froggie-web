@@ -14,16 +14,13 @@ jobs:
       run: echo "FROGGIE_BUILD_ARTIFACT_URL=https://steveyeager.jfrog.io/artifactory/build-artifacts/froggie/web/dist-$FROGGIE_VERSION.zip" >> $GITHUB_ENV
     - name: print_env
       run: env | grep FROGGIE_ | sort
-    - name: azure-login
-      uses: azure/login@v1
+    - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    - name: install-node
-      uses: actions/setup-node@v3.4.1
+    - uses: actions/setup-node@v3.4.1
       with:
         node-version: 16.15.1
-    - name: checkout
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
     - name: download-packages
       run: npm update
     - name: build
