@@ -26,4 +26,4 @@ jobs:
     - name: Azure CLI Action
       uses: Azure/cli@v1
       with:
-        inlineScript: az storage blob upload-batch -s ./dist -d '$web' --account-name froggie
+        inlineScript: az storage blob upload-batch -s ./dist -d '$web' --account-name froggie --connection-string ${{ secrets.AZURE_FROGGIE_STORAGE_CONNECTION_STRING }}
