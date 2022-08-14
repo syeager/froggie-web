@@ -8,9 +8,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: az-login
+      run: >
+        az login --service-principal
+        --username ${{ secrets.AZURE_FROGGIE_CLIENT_ID }}
+        -- password ${{ secrets.AZURE_FROGGIE_CLIENT_SECRET }}
+        -- tenant ${{ secrets.AZURE_FROGGIE_TENANT_ID }}
     - uses: actions/setup-node@v3.4.1
       with:
         node-version: 16.15.1
