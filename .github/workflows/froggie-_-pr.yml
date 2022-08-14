@@ -39,5 +39,5 @@ jobs:
         az webapp deploy
         --resource-group froggie
         --name froggie-web
-        --src-path ./dist
+        --src-path ./dist.zip
         --type static
