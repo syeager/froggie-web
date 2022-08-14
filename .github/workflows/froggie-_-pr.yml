@@ -10,9 +10,9 @@ jobs:
     steps:
     - uses: azure/login@v1
       with:
-        clientId: ${{ secrets.AZURE_FROGGIE_CLIENT_ID }}
-        tenantId: ${{ secrets.AZURE_FROGGIE_TENANT_ID }}
-        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        client-id: ${{ secrets.AZURE_FROGGIE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_FROGGIE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     - uses: actions/setup-node@v3.4.1
       with:
         node-version: 16.15.1
