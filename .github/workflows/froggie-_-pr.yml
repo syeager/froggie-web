@@ -22,9 +22,3 @@ jobs:
       run: npm update
     - name: build
       run: npm run build
-    - name: install-zip
-      run: sudo apt-get install -y zip
-    - name: zip-dist
-      run: sudo zip -r dist.zip ./dist/
-    - name: deploy
-      run: az storage blob upload-batch -s ./dist -d '$web' --account-name froggie --connection-string ${{ secrets.AZURE_FROGGIE_STORAGE_CONNECTION_STRING }} --debug
