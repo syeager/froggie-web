@@ -1,8 +1,8 @@
-name: froggie-_-pr
+name: froggie-main-ci
 
 on:
-  pull_request:
-    branches: "*"
+  push:
+    branches: "main"
 
 jobs:
   build:
@@ -22,3 +22,5 @@ jobs:
       run: npm update
     - name: build
       run: npm run build
+    - name: deploy
+      run: az storage blob upload-batch -s ./dist -d '$web' --account-name froggie --connection-string ${{ secrets.AZURE_FROGGIE_STORAGE_CONNECTION_STRING }} --debug
