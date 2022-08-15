@@ -1,0 +1,26 @@
+name: froggie-main-ci
+
+on:
+  push:
+    branches: "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: az-login
+      run: >
+        az login --service-principal
+        --username ${{ secrets.AZURE_FROGGIE_CLIENT_ID }}
+        --password ${{ secrets.AZURE_FROGGIE_CLIENT_SECRET }}
+        --tenant ${{ secrets.AZURE_FROGGIE_TENANT_ID }}
+    - uses: actions/setup-node@v3.4.1
+      with:
+        node-version: 16.15.1
+    - uses: actions/checkout@v3
+    - name: download-packages
+      run: npm update
+    - name: build
+      run: npm run build
+    - name: deploy
+      run: az storage blob upload-batch -s ./dist -d '$web' --account-name froggie --connection-string ${{ secrets.AZURE_FROGGIE_STORAGE_CONNECTION_STRING }} --debug
