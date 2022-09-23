@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "$(SCHEME)://$(API_URL)/swagger/core/swagger.json",
+      "url": "$(SCHEME)://$(API_URL)/swagger/Froggie/swagger.json",
       "output": null,
       "newLineBehavior": "Auto"
     }
