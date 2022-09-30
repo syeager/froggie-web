@@ -24,9 +24,9 @@
     "outDir": "dist",
     "downlevelIteration": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"],
+      "@Api": ["./generated/froggieClient"],
+      "@Tasks": ["./froggie/tasks"]
     },
   },
   "include": [
