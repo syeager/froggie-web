@@ -2,6 +2,7 @@ import * as FroggieApi from "@Api";
 import * as Tasks from "@Tasks";
 import { TaskCard } from "@Tasks";
 import { useEffect, useState } from "react";
+import { Row } from "react-bootstrap";
 
 export function TaskList(): JSX.Element {
   const [tasks, setTasks] = useState(undefined as undefined | Tasks.Task[]);
@@ -21,8 +22,10 @@ export function TaskList(): JSX.Element {
 
   return (
     <div>
-      <h1>Welcome to Froggie! 🐸</h1>
-      {taskCards}
+      <h1 className="text-center">Welcome to Froggie! 🐸</h1>
+      <Row className="w-75" xs={1}>
+        {taskCards}
+      </Row>
     </div>
   );
 }
