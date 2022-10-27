@@ -1,22 +1,19 @@
-import * as FroggieApi from "@Api";
-import * as Tasks from "@Tasks";
-import { TaskCard, TaskCreateForm } from "@Tasks";
+import { Task, TaskCard, TaskCreateForm, TaskPageCommand } from "@Tasks";
 import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 
 const updateIntervalMs = 1000;
 
 export function TaskList(): JSX.Element {
-  const [tasks, setTasks] = useState(undefined as undefined | Tasks.Task[]);
+  const [tasks, setTasks] = useState(undefined as undefined | Task[]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const api = async () => {
-        const client = new FroggieApi.Froggie.Client();
-        const taskPage = await client.getTaskPage_GetPage(100, undefined);
-        setTasks(taskPage.obj!.results!.map((dto) => Tasks.createTask(dto)));
+      const getTaskPage = async () => {
+        const tasks = await TaskPageCommand();
+        setTasks(tasks || []);
       };
-      api();
+      getTaskPage();
     }, updateIntervalMs);
 
     return () => clearInterval(interval);

@@ -1,5 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { TaskList } from "@/_temp/taskList";
+import { TaskList } from "@/froggie/tasks/components/taskList";
 import { Container } from "react-bootstrap";
 
 function App(): JSX.Element {
