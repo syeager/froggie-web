@@ -9,3 +9,8 @@ export function getAccessToken(): string {
 
   return activeAccessToken;
 }
+
+export function setAccessToken(accessToken: string): void {
+  localStorage.setItem(accessTokenKey, accessToken);
+  activeAccessToken = accessToken;
+}
