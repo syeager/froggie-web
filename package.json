@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "webpack --mode=production --env production --progress",
-    "genClient": "cross-env NODE_ENV=production npm run genClient",
+    "genClient": "ts-node ./tools/generateClient.ts",
     "genClient:local": "cross-env NODE_ENV=localhost npm run genClient",
     "lint": "eslint \"./src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"./src/**/*.{ts,tsx}\" --fix",
