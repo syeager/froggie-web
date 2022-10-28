@@ -1,20 +1,26 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import { LogInCommand } from "@Accounts";
 import { Link } from "react-router-dom";
-import { RegisterPath } from "@Accounts";
+import { RegisterCommand } from "../commands/registerCommand";
+import { LogInPath } from "@Accounts";
 
-export const LogInPath = "LogIn";
+export const RegisterPath = "Register";
 
-export function LogInPage(): JSX.Element {
+export function RegisterPage(): JSX.Element {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
   const onSubmit = async (e: React.MouseEvent): Promise<void> => {
     e.preventDefault();
+
+    if (email == "") {
+      alert("You need to enter a email!");
+      return;
+    }
 
     if (email == "") {
       alert("You need to enter a email!");
@@ -26,27 +32,35 @@ export function LogInPage(): JSX.Element {
       return;
     }
 
-    const succeeded = await LogInCommand(email, password);
+    const succeeded = await RegisterCommand(email, name, password);
 
     if (succeeded) {
       // TODO: Create route consts.
       navigate("/");
     } else {
       // TODO: Provide access to error message.
-      alert("Failed to log in 😱");
+      alert("Failed to register 😱");
     }
   };
 
   return (
     <div>
       <Form>
-        <h1>Hello again!</h1>
+        <h1>Welcome to Froggie!</h1>
         <Form.Group>
           <Form.Control
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email"
             type="email"
             value={email}
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            onChange={(e) => setName(e.target.value)}
+            placeholder="username"
+            type="text"
+            value={name}
           />
         </Form.Group>
         <Form.Group>
@@ -58,12 +72,10 @@ export function LogInPage(): JSX.Element {
           />
         </Form.Group>
         <Button onClick={onSubmit} type="submit" variant="primary">
-          Log In
+          Register
         </Button>
       </Form>
-      <Link to={`/${RegisterPath}`}>
-        Don&apos;t have an account yet? Register here.
-      </Link>
+      <Link to={`/${LogInPath}`}>Already a user? Log in here.</Link>
     </div>
   );
 }
