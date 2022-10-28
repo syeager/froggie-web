@@ -3,7 +3,6 @@ import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { LogInCommand } from "../commands/logInCommand";
 
-// TODO: Use LogInCommand.
 export function LogInPage(): JSX.Element {
   const navigate = useNavigate();
 
