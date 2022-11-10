@@ -1,7 +1,7 @@
 import { RequestManager } from "@/froggie/requests";
 import { Froggie } from "@Api";
 import { LogInRequest } from "../requests/logInRequest";
-import { setAccessToken } from "../stores/accountStore";
+import { setUser } from "../stores/accountStore";
 
 export async function LogInCommand(
   email: string,
@@ -20,12 +20,16 @@ export async function LogInCommand(
   }
 
   const logInResponse = response.obj;
-  if (!logInResponse.succeeded || !logInResponse.accessToken) {
+  if (
+    !logInResponse.succeeded ||
+    !logInResponse.accessToken ||
+    !logInResponse.user
+  ) {
     console.log("Failed to log in");
     return false;
   }
 
-  setAccessToken(logInResponse.accessToken);
+  setUser(logInResponse.user, logInResponse.accessToken);
 
   return true;
 }
