@@ -1,5 +1,6 @@
 import { FroggieRequest } from "@/froggie/requests";
 import { Froggie } from "@/generated/froggieClient";
+import moment from "moment";
 
 export class TaskCreateRequest extends FroggieRequest<Froggie.ApiResponseOfTaskDto> {
   private readonly title: string;
@@ -17,6 +18,7 @@ export class TaskCreateRequest extends FroggieRequest<Froggie.ApiResponseOfTaskD
     const request = new Froggie.CreateTaskRequest({
       title: this.title,
       creatorId: this.creatorId,
+      dueDate: moment(),
     });
 
     return await client.createTask_Create(request);
