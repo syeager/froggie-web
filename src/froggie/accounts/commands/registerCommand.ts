@@ -1,7 +1,7 @@
 import { RequestManager } from "@/froggie/requests";
 import { Froggie } from "@Api";
 import { CreateUserRequest } from "../requests/createUserRequest";
-import { setAccessToken } from "../stores/accountStore";
+import { setUser } from "../stores/accountStore";
 
 export async function RegisterCommand(
   email: string,
@@ -21,12 +21,16 @@ export async function RegisterCommand(
   }
 
   const logInResponse = response.obj;
-  if (!logInResponse.succeeded || !logInResponse.accessToken) {
+  if (
+    !logInResponse.succeeded ||
+    !logInResponse.accessToken ||
+    !logInResponse.user
+  ) {
     console.log("Failed to register user");
     return false;
   }
 
-  setAccessToken(logInResponse.accessToken);
+  setUser(logInResponse.user, logInResponse.accessToken);
 
   return true;
 }

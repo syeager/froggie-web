@@ -19,6 +19,6 @@ export class LogInRequest extends FroggieRequest<Froggie.ApiResponseOfLogInRespo
       password: this.password,
     });
 
-    return await client.logInUser_Create(request);
+    return await client.logInUser_LogIn(request);
   }
 }
