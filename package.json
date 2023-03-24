@@ -97,7 +97,7 @@
     "html-loader": "4.1.0",
     "html-webpack-plugin": "5.5.0",
     "node-polyfill-webpack-plugin": "2.0.1",
-    "nswag": "13.16.1",
+    "nswag": "13.18.2",
     "pnp-webpack-plugin": "1.7.0",
     "postcss-flexbugs-fixes": "5.0.2",
     "postcss-loader": "7.0.1",
