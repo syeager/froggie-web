@@ -12,8 +12,6 @@ const clientName = "FroggieClient";
 loadEnv();
 const options = loadOptions();
 runNswag(options);
-postProcessClient();
-console.info("Client generation complete");
 
 function loadEnv() {
   const mode = process.env.NODE_ENV || "development";
@@ -52,29 +50,26 @@ function loadOptions() {
 }
 
 function runNswag(options: any) {
-  function onComplete(
-    error: never | null,
-    stdout: string,
-    stderr: string
-  ): void {
-    if (stdout !== "") {
-      console.log(stdout);
-    }
-
-    if (stderr !== "") {
-      console.error(stderr);
-    }
-
-    if (error != null) {
-      throw error;
-    }
-  }
-
   console.info("Running nswag");
   const nswagPath = path.join("node_modules", ".bin", "nswag");
   const variables = `/variables:API_URL=${options.url},SCHEME=${options.scheme}`;
-  const command = `${nswagPath} run ./config/${clientName}.nswag /runtime:Net60 ${variables}`;
-  child_process.execSync(command, onComplete);
+  const nswagProcess = child_process.spawn(
+    nswagPath,
+    ["run", `./config/${clientName}.nswag`, "/runtime:Net70", variables],
+    {
+      env: process.env,
+      shell: true,
+    }
+  );
+
+  nswagProcess.stdout.on("data", (data: any) => console.log(`nswag: ${data}`));
+  nswagProcess.stderr.on("data", (data: any) =>
+    console.error(`nswag: ${data}`)
+  );
+  nswagProcess.on("close", (code: any) => {
+    console.log(`nswag: finished with code ${code}`);
+    postProcessClient();
+  });
 }
 
 function postProcessClient() {
@@ -94,4 +89,5 @@ function postProcessClient() {
     "Editing generated client file to be ignored by the ts compiler"
   );
   prependFile(outputPath, "/* eslint-disable */\n// @ts-nocheck\n");
+  console.info("Client generation complete");
 }
