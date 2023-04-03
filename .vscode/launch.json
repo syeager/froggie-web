@@ -6,8 +6,7 @@
           "request": "launch",
           "name": "Chrome Localhost",
           "url": "http://localhost:8888",
-          "webRoot": "${workspaceFolder}/src",
-          "sourceMaps": true
+          "webRoot": "${workspaceFolder}\\src"
       }
   ]
 }
