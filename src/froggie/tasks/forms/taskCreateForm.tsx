@@ -1,9 +1,24 @@
 import { Button, Form, Row } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TaskCreateCommand } from "../commands/taskCreateCommand";
+import { Group, GetUsersGroupCommand } from "@Groups";
+import moment from "moment";
 
 export function TaskCreateForm(): JSX.Element {
   const [title, setTitle] = useState("");
+  const [groupId, setGroupId] = useState("");
+  const [dueDate, setDueDate] = useState(moment().add(2, "day"));
+  const [groups, setGroups] = useState([] as Group[]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const usersGroups = await GetUsersGroupCommand();
+      setGroups(usersGroups);
+      setGroupId(usersGroups[0].id);
+    };
+
+    fetch();
+  }, []);
 
   const onSubmit = async (e: React.MouseEvent): Promise<void> => {
     e.preventDefault();
@@ -13,7 +28,7 @@ export function TaskCreateForm(): JSX.Element {
       return;
     }
 
-    const task = await TaskCreateCommand(title);
+    const task = await TaskCreateCommand(title, groupId, dueDate);
 
     if (task) {
       setTitle("");
@@ -23,6 +38,12 @@ export function TaskCreateForm(): JSX.Element {
     }
   };
 
+  const groupOptions = groups.map((group) => (
+    <option key={group.id} value={group.id}>
+      {group.name}
+    </option>
+  ));
+
   return (
     <Form>
       <Row>
@@ -30,6 +51,17 @@ export function TaskCreateForm(): JSX.Element {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Add task title"
           value={title}
+        />
+        <Form.Select
+          onChange={(e) => setGroupId(e.target.value)}
+          value={groupId}
+        >
+          {groupOptions}
+        </Form.Select>
+        <Form.Control
+          onChange={(e) => setDueDate(moment(e.target.value))}
+          placeholder="Add due date"
+          value={dueDate.toLocaleString()}
         />
         <Button onClick={onSubmit} type="submit" variant="primary">
           Add

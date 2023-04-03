@@ -3,10 +3,14 @@ import { RequestManager } from "@/froggie/requests";
 import { Froggie } from "@Api";
 import { createTask, Task, TaskCreateRequest } from "@Tasks";
 
-export async function TaskCreateCommand(title: string): Promise<Task | null> {
+export async function TaskCreateCommand(
+  title: string,
+  groupId: string,
+  dueDate: moment.Moment
+): Promise<Task | null> {
   const userId = getUser()!.id;
 
-  const request = new TaskCreateRequest(title, userId);
+  const request = new TaskCreateRequest(title, userId, groupId, dueDate);
   const response = await RequestManager.send(request);
 
   if (!(response instanceof Froggie.ApiResponseOfTaskDto)) {
