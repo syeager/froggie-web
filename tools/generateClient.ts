@@ -32,19 +32,15 @@ function loadOptions() {
     "HTTP/HTTPS",
     process.env.API_SCHEME
   );
+  commander.option(
+    "-d --dotnet <dotnet>",
+    "Dotnet Runtime",
+    process.env.DOTNET_RUNTIME
+  );
   commander.parse(process.argv);
 
   const options = commander.opts();
-  console.info(`url=${options.url}`);
-  console.info(`scheme=${options.scheme}`);
-
-  if (!options.url) {
-    throw new Error("url is required");
-  }
-
-  if (!options.scheme) {
-    throw new Error("scheme is required");
-  }
+  console.info(JSON.stringify(options));
 
   return options;
 }
@@ -52,10 +48,10 @@ function loadOptions() {
 function runNswag(options: any) {
   console.info("Running nswag");
   const nswagPath = path.join("node_modules", ".bin", "nswag");
-  const variables = `/variables:API_URL=${options.url},SCHEME=${options.scheme}`;
+  const variables = `/variables:API_URL=${options.url},SCHEME=${options.scheme},DOTNET_RUNTIME=${options.dotnet}`;
   const nswagProcess = child_process.spawn(
     nswagPath,
-    ["run", `./config/${clientName}.nswag`, "/runtime:Net70", variables],
+    ["run", `./config/${clientName}.nswag`, variables],
     {
       env: process.env,
       shell: true,
