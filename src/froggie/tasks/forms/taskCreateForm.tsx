@@ -1,6 +1,6 @@
 import { Button, Form, Row } from "react-bootstrap";
-import * as FroggieApi from "@Api";
 import { useState } from "react";
+import { TaskCreateCommand } from "../commands/taskCreateCommand";
 
 export function TaskCreateForm(): JSX.Element {
   const [title, setTitle] = useState("");
@@ -13,14 +13,13 @@ export function TaskCreateForm(): JSX.Element {
       return;
     }
 
-    const client = new FroggieApi.Froggie.Client();
-    const request = new FroggieApi.Froggie.CreateTaskRequest({ title });
-    const response = await client.createTask_Create(request);
+    const task = await TaskCreateCommand(title);
 
-    if (response.isError) {
-      alert(response.message);
-    } else {
+    if (task) {
       setTitle("");
+    } else {
+      // TODO: Provide access to error message.
+      alert("Failed to create task!");
     }
   };
 
