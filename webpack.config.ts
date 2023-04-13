@@ -66,10 +66,11 @@ module.exports = {
     //new webpack.NamedModulesPlugin(),
   ],
   devServer: {
-    static: distPath,
-    port: 8888,
     devMiddleware: {
       publicPath: "/",
     },
+    historyApiFallback: true,
+    port: 8888,
+    static: distPath,
   },
 };

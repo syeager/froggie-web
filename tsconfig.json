@@ -26,6 +26,7 @@
     "paths": {
       "@/*": ["./*"],
       "@Api": ["./generated/froggieClient"],
+      "@Accounts": ["./froggie/accounts"],
       "@Tasks": ["./froggie/tasks"]
     },
   },

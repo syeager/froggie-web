@@ -23,6 +23,7 @@ export type ApiResultFactory = {
   createWithData: (data: any) => ApiResult;
 };
 
+export type RequiresLogInCallback = () => void;
 type AccessTokenLoader = () => string;
 
 export class RequestManager<TClient extends ApiClient> {
@@ -31,15 +32,20 @@ export class RequestManager<TClient extends ApiClient> {
   private readonly apiClient: TClient;
   private readonly getAccessToken: AccessTokenLoader;
   private readonly apiResultFactory: ApiResultFactory;
+  private readonly requiresLogInCallback: RequiresLogInCallback;
 
   constructor(
     apiClient: TClient,
     getAccessToken: AccessTokenLoader,
-    apiResultFactory: ApiResultFactory
+    apiResultFactory: ApiResultFactory,
+    requiresLogInCallback: RequiresLogInCallback | undefined = undefined
   ) {
     this.apiClient = apiClient;
     this.getAccessToken = getAccessToken;
     this.apiResultFactory = apiResultFactory;
+    this.requiresLogInCallback = requiresLogInCallback
+      ? requiresLogInCallback
+      : () => alert("you need to sign in");
   }
 
   public async send<T extends ApiResult>(
@@ -71,14 +77,15 @@ export class RequestManager<TClient extends ApiClient> {
           apiResult.message = apiResponse.message;
         }
 
-        let needsRetry = true;
+        let needsRetry = false;
 
-        // switch (apiResponse.status) {
-        //   case 401:
-        //     // TODO: Attempt sign in if we have a refresh token.
-        //     needsRetry = true;
-        //     break;
-        // }
+        if (apiResponse.status == 401) {
+          // TODO: Check if refresh token exists.
+          const retryToken = undefined;
+          needsRetry == retryToken;
+        } else if (apiResponse.status >= 500) {
+          needsRetry = true;
+        }
 
         needsRetry = needsRetry && attempts < RequestManager.attemptMax;
         console.warn(
@@ -96,7 +103,7 @@ export class RequestManager<TClient extends ApiClient> {
           return this.sendInternal(request, attempts);
         } else {
           if (apiResponse.status == 401) {
-            alert("you need to sign in");
+            this.requiresLogInCallback();
           }
         }
       }
