@@ -12,8 +12,6 @@ const clientName = "FroggieClient";
 loadEnv();
 const options = loadOptions();
 runNswag(options);
-postProcessClient();
-console.info("Client generation complete");
 
 function loadEnv() {
   const mode = process.env.NODE_ENV || "development";
@@ -34,47 +32,40 @@ function loadOptions() {
     "HTTP/HTTPS",
     process.env.API_SCHEME
   );
+  commander.option(
+    "-d --dotnet <dotnet>",
+    "Dotnet Runtime",
+    process.env.DOTNET_RUNTIME
+  );
   commander.parse(process.argv);
 
   const options = commander.opts();
-  console.info(`url=${options.url}`);
-  console.info(`scheme=${options.scheme}`);
-
-  if (!options.url) {
-    throw new Error("url is required");
-  }
-
-  if (!options.scheme) {
-    throw new Error("scheme is required");
-  }
+  console.info(JSON.stringify(options));
 
   return options;
 }
 
 function runNswag(options: any) {
-  function onComplete(
-    error: never | null,
-    stdout: string,
-    stderr: string
-  ): void {
-    if (stdout !== "") {
-      console.log(stdout);
-    }
-
-    if (stderr !== "") {
-      console.error(stderr);
-    }
-
-    if (error != null) {
-      throw error;
-    }
-  }
-
   console.info("Running nswag");
   const nswagPath = path.join("node_modules", ".bin", "nswag");
-  const variables = `/variables:API_URL=${options.url},SCHEME=${options.scheme}`;
-  const command = `${nswagPath} run ./config/${clientName}.nswag /runtime:Net60 ${variables}`;
-  child_process.execSync(command, onComplete);
+  const variables = `/variables:API_URL=${options.url},SCHEME=${options.scheme},DOTNET_RUNTIME=${options.dotnet}`;
+  const nswagProcess = child_process.spawn(
+    nswagPath,
+    ["run", `./config/${clientName}.nswag`, variables],
+    {
+      env: process.env,
+      shell: true,
+    }
+  );
+
+  nswagProcess.stdout.on("data", (data: any) => console.log(`nswag: ${data}`));
+  nswagProcess.stderr.on("data", (data: any) =>
+    console.error(`nswag: ${data}`)
+  );
+  nswagProcess.on("close", (code: any) => {
+    console.log(`nswag: finished with code ${code}`);
+    postProcessClient();
+  });
 }
 
 function postProcessClient() {
@@ -94,4 +85,5 @@ function postProcessClient() {
     "Editing generated client file to be ignored by the ts compiler"
   );
   prependFile(outputPath, "/* eslint-disable */\n// @ts-nocheck\n");
+  console.info("Client generation complete");
 }
