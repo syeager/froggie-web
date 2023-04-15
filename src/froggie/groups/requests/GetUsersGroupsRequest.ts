@@ -12,6 +12,6 @@ export class GetUsersGroupRequest extends FroggieRequest<Froggie.ApiResponseOfGr
   protected executeInternal(
     client: Froggie.Client
   ): Promise<Froggie.ApiResponseOfGroupDtoOf> {
-    return client.getGroups_GetGroups(this.userId);
+    return client.getUserGroups_GetGroups(this.userId);
   }
 }
