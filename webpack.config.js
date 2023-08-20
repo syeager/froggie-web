@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -7,17 +8,8 @@ const TsconfigPathsPluginDefault = require("tsconfig-paths-webpack-plugin");
 const srcPath = path.resolve(__dirname, "src");
 const distPath = path.resolve(__dirname, "dist");
 
-module.exports = {
-  stats: {
-    errorDetails: true,
-  },
-  entry: [
-    "react-hot-loader/patch",
-    "webpack-dev-server/client?http://localhost:8888",
-    "webpack/hot/only-dev-server",
-    path.resolve(srcPath, "index.tsx"),
-  ],
-  devtool: "source-map",
+let configuration = {
+  entry: [path.resolve(srcPath, "index.tsx")],
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".jsx", ".json"],
     plugins: [new TsconfigPathsPluginDefault()],
@@ -62,12 +54,30 @@ module.exports = {
       ],
     }),
   ],
-  devServer: {
-    devMiddleware: {
-      publicPath: "/",
-    },
-    historyApiFallback: true,
-    port: 8888,
-    static: distPath,
-  },
 };
+
+if (process.env.NODE_ENV == "development") {
+  configuration = {
+    ...configuration,
+    stats: {
+      errorDetails: true,
+    },
+    entry: [
+      "react-hot-loader/patch",
+      "webpack-dev-server/client?http://localhost:8888",
+      "webpack/hot/only-dev-server",
+      path.resolve(srcPath, "index.tsx"),
+    ],
+    devtool: "source-map",
+    devServer: {
+      devMiddleware: {
+        publicPath: "/",
+      },
+      historyApiFallback: true,
+      port: 8888,
+      static: distPath,
+    },
+  };
+}
+
+module.exports = configuration;
