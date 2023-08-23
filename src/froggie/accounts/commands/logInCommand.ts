@@ -1,5 +1,4 @@
 import { RequestManager } from "@/froggie/requests";
-import { Froggie } from "@Api";
 import { LogInRequest } from "../requests/logInRequest";
 import { setUser } from "../stores/accountStore";
 
@@ -10,13 +9,8 @@ export async function LogInCommand(
   const request = new LogInRequest(email, password);
   const response = await RequestManager.send(request);
 
-  if (!(response instanceof Froggie.ApiResponseOfLogInResponse)) {
-    throw console.error("Unknown error while logging in");
-  }
-
   if (response.isError || !response.obj) {
-    console.error(response.message);
-    return false;
+    throw alert(response.message);
   }
 
   const logInResponse = response.obj;

@@ -5,22 +5,10 @@ export type ApiClient = {
   accessToken: string | undefined;
 };
 
-export type ApiResult = {
-  statusCode?: number;
-  isError?: boolean;
-  message?: string | undefined;
-};
-
 export type ApiResponse = {
-  status: number;
-  response: string;
+  statusCode: number;
+  isError: boolean;
   message: string;
-};
-
-export type ApiResultFactory = {
-  create: () => ApiResult;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  createWithData: (data: any) => ApiResult;
 };
 
 export type RequiresLogInCallback = () => void;
@@ -31,88 +19,83 @@ export class RequestManager<TClient extends ApiClient> {
 
   private readonly apiClient: TClient;
   private readonly getAccessToken: AccessTokenLoader;
-  private readonly apiResultFactory: ApiResultFactory;
   private readonly requiresLogInCallback: RequiresLogInCallback;
 
   constructor(
     apiClient: TClient,
     getAccessToken: AccessTokenLoader,
-    apiResultFactory: ApiResultFactory,
     requiresLogInCallback: RequiresLogInCallback | undefined = undefined
   ) {
     this.apiClient = apiClient;
     this.getAccessToken = getAccessToken;
-    this.apiResultFactory = apiResultFactory;
     this.requiresLogInCallback = requiresLogInCallback
       ? requiresLogInCallback
       : () => alert("you need to sign in");
   }
 
-  public async send<T extends ApiResult>(
+  public async send<T extends ApiResponse>(
     request: ApiRequest<T, TClient>
-  ): Promise<T | ApiResponse> {
+  ): Promise<T> {
     return this.sendInternal(request, 0);
   }
 
-  private async sendInternal<T extends ApiResult>(
+  private async sendInternal<T extends ApiResponse>(
     request: ApiRequest<T, TClient>,
     attempts: number
-  ): Promise<T | ApiResponse> {
+  ): Promise<T> {
     this.apiClient.accessToken = this.getAccessToken() ?? "";
 
     try {
       return await request.execute(this.apiClient);
     } catch (response) {
-      const apiResponse = response as ApiResponse;
-      if (apiResponse) {
-        let apiResult: ApiResult;
+      let apiResponse = response as ApiResponse;
 
-        if (apiResponse.response && apiResponse.response.length > 0) {
-          const data = JSON.parse(apiResponse.response);
-          apiResult = this.apiResultFactory.createWithData(data);
-        } else {
-          apiResult = this.apiResultFactory.create();
-          apiResult.isError = true;
-          apiResult.statusCode = apiResponse.status;
-          apiResult.message = apiResponse.message;
-        }
+      if (!apiResponse) {
+        console.error("Could not handle response from API");
+        apiResponse = {
+          statusCode: 0,
+          isError: true,
+          message: "Could not handle response from API",
+        };
+      }
 
-        let needsRetry = false;
+      const needsRetry = this.checkRetries(apiResponse.statusCode, attempts);
 
-        if (apiResponse.status == 401) {
-          // TODO: Check if refresh token exists.
-          const retryToken = undefined;
-          needsRetry == retryToken;
-        } else if (apiResponse.status >= 500) {
-          needsRetry = true;
-        }
+      console.warn(
+        `Request '${request.getTypeName()}' failed:status=${
+          apiResponse.statusCode
+        }, count=${attempts}/${
+          RequestManager.attemptMax
+        }, willRetry=${needsRetry}`
+      );
 
-        needsRetry = needsRetry && attempts < RequestManager.attemptMax;
-        console.warn(
-          `Request '${request.getTypeName()}' failed:status=${
-            apiResponse.status
-          }, count=${attempts}/${
-            RequestManager.attemptMax
-          }, willRetry=${needsRetry}`
-        );
-
-        if (needsRetry) {
-          attempts += 1;
-          const ms = attempts * 500;
-          await wait(ms);
-          return this.sendInternal(request, attempts);
-        } else {
-          if (apiResponse.status == 401) {
-            this.requiresLogInCallback();
-          }
+      if (needsRetry) {
+        attempts += 1;
+        const ms = attempts * 500;
+        await wait(ms);
+        return this.sendInternal(request, attempts);
+      } else {
+        if (apiResponse.statusCode == 401) {
+          this.requiresLogInCallback();
+          // TODO: Should we exit here?
         }
       }
+
+      return apiResponse as T;
+    }
+  }
+
+  checkRetries(statusCode: number, attempts: number): boolean {
+    let needsRetry = false;
+    if (statusCode == 401) {
+      // TODO: Check if refresh token exists.
+      const retryToken = undefined;
+      needsRetry == retryToken;
+    } else if (statusCode >= 500) {
+      needsRetry = true;
     }
 
-    return {
-      status: 503,
-      message: "Did not get response from the API",
-      response: "",
-    };
+    needsRetry = needsRetry && attempts < RequestManager.attemptMax;
+    return needsRetry;
   }
 }

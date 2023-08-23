@@ -6,17 +6,26 @@ const updateIntervalMs = 1000;
 
 export function TaskList(): JSX.Element {
   const [tasks, setTasks] = useState(undefined as undefined | Task[]);
+  const [poll, setPoll] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(() => {
       const getTaskPage = async () => {
         const tasks = await TaskPageCommand();
-        setTasks(tasks || []);
+        if (tasks == null) {
+          setPoll(false);
+        } else {
+          setTasks(tasks);
+        }
       };
       getTaskPage();
     }, updateIntervalMs);
 
-    return () => clearInterval(interval);
+    return () => {
+      if (poll) {
+        clearInterval(interval);
+      }
+    };
   }, []);
 
   const taskCards = tasks
