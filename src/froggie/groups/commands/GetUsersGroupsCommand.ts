@@ -9,7 +9,7 @@ export async function GetUsersGroupCommand(): Promise<Array<Group>> {
   const request = new GetUsersGroupRequest(userId);
   const response = await RequestManager.send(request);
 
-  if (!(response instanceof Froggie.ApiResponseOfGroupDto)) {
+  if (!(response instanceof Froggie.ApiResponseOfGroupDtoOf)) {
     throw console.error("Unknown error while getting a user's groups.");
   }
 
