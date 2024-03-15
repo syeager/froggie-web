@@ -15,9 +15,14 @@ const groupsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getUsersGroupsAsync.fulfilled, (state, action) => {
-      state.groups = action.payload;
-    });
+    builder
+      .addCase(getUsersGroupsAsync.fulfilled, (state, action) => {
+        console.info("loaded groups");
+        state.groups = action.payload;
+      })
+      .addCase(getUsersGroupsAsync.pending, () =>
+        console.info("loading groups")
+      );
   },
 });
 
