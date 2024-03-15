@@ -1,6 +1,7 @@
-import { Task, TaskCard, TaskCreateForm, TaskPageCommand } from "@Tasks";
+import { Task, TaskCard, TaskPageCommand } from "@Tasks";
 import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
+import { ToggleTaskFormModalButton } from "./ToggleTaskFormModalButton";
 
 const updateIntervalMs = 10000;
 
@@ -35,7 +36,7 @@ export function TaskList(): JSX.Element {
   return (
     <div>
       <h2>Tasks</h2>
-      <TaskCreateForm />
+      <ToggleTaskFormModalButton />
       <Row className="w-75" xs={1}>
         {taskCards}
       </Row>

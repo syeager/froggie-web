@@ -4,7 +4,11 @@ import { TaskCreateCommand } from "../commands/taskCreateCommand";
 import { Group, GetUsersGroupCommand } from "@Groups";
 import moment from "moment";
 
-export function TaskCreateForm(): JSX.Element {
+type Props = {
+  onSubmit: () => void;
+};
+
+export function TaskCreateForm(props: Props): JSX.Element {
   const [title, setTitle] = useState("");
   const [groupId, setGroupId] = useState("");
   const [dueDate, setDueDate] = useState(moment().add(2, "day"));
@@ -32,6 +36,7 @@ export function TaskCreateForm(): JSX.Element {
 
     if (task) {
       setTitle("");
+      props.onSubmit();
     } else {
       // TODO: Provide access to error message.
       alert("Failed to create task!");
