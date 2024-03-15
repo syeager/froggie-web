@@ -4,9 +4,9 @@ import {
   Routes,
   Outlet,
 } from "react-router-dom";
-import { TaskList } from "@/froggie/tasks/components/taskList";
 import { Container } from "react-bootstrap";
 import { LogInPage, LogInPath, RegisterPage, RegisterPath } from "@Accounts";
+import { HomePage } from "./HomePage";
 
 function App(): JSX.Element {
   return (
@@ -14,7 +14,7 @@ function App(): JSX.Element {
       <Router>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<TaskList />} />
+            <Route index element={<HomePage />} />
             <Route path={LogInPath} element={<LogInPage />} />
             <Route path={RegisterPath} element={<RegisterPage />} />
           </Route>
