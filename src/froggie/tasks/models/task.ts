@@ -1,16 +1,15 @@
 import { Froggie } from "@Api";
 
-export class Task {
-  public readonly id: string;
-  public readonly title: string;
-
-  constructor(id: string, title: string) {
-    this.id = id;
-    this.title = title;
-  }
+export interface Task {
+  readonly id: string;
+  readonly title: string;
+  readonly groupId: string;
 }
 
-export function createTask(taskDto: Froggie.TaskDto) {
-  const task = new Task(taskDto.id, taskDto.title);
-  return task;
+export function createTask(taskDto: Froggie.TaskDto): Task {
+  return {
+    id: taskDto.id,
+    title: taskDto.title,
+    groupId: taskDto.groupId,
+  };
 }
