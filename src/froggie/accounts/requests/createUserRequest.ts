@@ -16,12 +16,12 @@ export class CreateUserRequest extends FroggieRequest<Froggie.ApiResponseOfLogIn
   protected async executeInternal(
     client: Froggie.Client
   ): Promise<Froggie.ApiResponseOfLogInResponse> {
-    const request = new Froggie.CreateUserRequest({
+    const request = new Froggie.CreateAccountRequest({
       email: this.email,
       name: this.name,
       password: this.password,
     });
 
-    return await client.createUser_Create(request);
+    return await client.createAccount_Create(request);
   }
 }

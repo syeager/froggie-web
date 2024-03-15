@@ -1,36 +1,27 @@
-import { RequestManager } from "@/froggie/requests";
 import { Froggie } from "@Api";
-import { CreateUserRequest } from "../requests/createUserRequest";
-import { setUser } from "../stores/accountStore";
+import { setUser } from "@Accounts";
+import { FroggieClient } from "@/froggie/requests/FroggieClient";
 
 export async function RegisterCommand(
   email: string,
   name: string,
   password: string
 ): Promise<boolean> {
-  const request = new CreateUserRequest(email, name, password);
-  const response = await RequestManager.send(request);
-
-  if (!(response instanceof Froggie.ApiResponseOfLogInResponse)) {
-    throw console.error("Unknown error while registering user");
-  }
-
-  if (response.isError || !response.obj) {
-    console.error(response.message);
-    return false;
-  }
+  const request = new Froggie.CreateAccountRequest({ email, name, password });
+  const response = await FroggieClient().createAccount_Create(request);
 
   const logInResponse = response.obj;
   if (
-    !logInResponse.succeeded ||
-    !logInResponse.accessToken ||
-    !logInResponse.user
+    !response.isError &&
+    logInResponse &&
+    logInResponse.succeeded &&
+    logInResponse.user &&
+    logInResponse.accessToken
   ) {
-    console.log("Failed to register user");
-    return false;
+    setUser(logInResponse.user, logInResponse.accessToken);
+    return true;
   }
 
-  setUser(logInResponse.user, logInResponse.accessToken);
-
-  return true;
+  console.error(response.message);
+  return false;
 }

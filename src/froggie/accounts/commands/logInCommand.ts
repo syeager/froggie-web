@@ -1,29 +1,26 @@
-import { RequestManager } from "@/froggie/requests";
-import { LogInRequest } from "../requests/logInRequest";
-import { setUser } from "../stores/accountStore";
+import { setUser } from "@Accounts";
+import { FroggieClient } from "@/froggie/requests/FroggieClient";
+import { Froggie } from "@Api";
 
 export async function LogInCommand(
   email: string,
   password: string
 ): Promise<boolean> {
-  const request = new LogInRequest(email, password);
-  const response = await RequestManager.send(request);
-
-  if (response.isError || !response.obj) {
-    throw alert(response.message);
-  }
+  const request = new Froggie.LogInUserRequest({ email, password });
+  const response = await FroggieClient().logInUser_LogIn(request);
 
   const logInResponse = response.obj;
   if (
-    !logInResponse.succeeded ||
-    !logInResponse.accessToken ||
-    !logInResponse.user
+    !response.isError &&
+    logInResponse &&
+    logInResponse.succeeded &&
+    logInResponse.user &&
+    logInResponse.accessToken
   ) {
-    console.log("Failed to log in");
-    return false;
+    setUser(logInResponse.user, logInResponse.accessToken);
+    return true;
   }
 
-  setUser(logInResponse.user, logInResponse.accessToken);
-
-  return true;
+  console.error(response.message);
+  return false;
 }

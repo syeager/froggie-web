@@ -1,15 +1,17 @@
-import { RequestManager } from "@/froggie/requests";
-import { createTask, Task, TaskPageRequest } from "@Tasks";
+import { FroggieClient } from "@/froggie/requests/FroggieClient";
+import { createTask, Task } from "@Tasks";
 
-export async function TaskPageCommand(): Promise<Task[] | null> {
-  const request = new TaskPageRequest();
-  const response = await RequestManager.send(request);
+export async function TaskPageCommand(
+  size = 100,
+  page = 0
+): Promise<Task[] | null> {
+  const response = await FroggieClient().getTaskPage_GetPage(size, page);
 
-  if (response.isError || !response.obj) {
-    console.error(response.message);
-    return null;
+  if (!response.isError && response.obj) {
+    const tasks = response.obj.results?.map(createTask) ?? null;
+    return tasks;
   }
 
-  const tasks = response.obj.results?.map(createTask) ?? null;
-  return tasks;
+  console.error(response.message);
+  return null;
 }
