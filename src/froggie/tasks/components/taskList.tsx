@@ -2,7 +2,7 @@ import { Task, TaskCard, TaskCreateForm, TaskPageCommand } from "@Tasks";
 import { useEffect, useState } from "react";
 import { Row } from "react-bootstrap";
 
-const updateIntervalMs = 1000;
+const updateIntervalMs = 10000;
 
 export function TaskList(): JSX.Element {
   const [tasks, setTasks] = useState(undefined as undefined | Task[]);
