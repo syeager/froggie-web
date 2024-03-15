@@ -1,26 +1,24 @@
 import { Button, Form, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { TaskCreateCommand } from "../commands/taskCreateCommand";
-// import { Group, GetUsersGroupCommand } from "@Groups";
+import { Group, GetUsersGroupCommand } from "@Groups";
 import moment from "moment";
-import { Group } from "@/froggie/groups";
 
 export function TaskCreateForm(): JSX.Element {
   const [title, setTitle] = useState("");
   const [groupId, setGroupId] = useState("");
   const [dueDate, setDueDate] = useState(moment().add(2, "day"));
-  // const [groups, setGroups] = useState([] as Group[]);
-  const groups = [] as Group[];
+  const [groups, setGroups] = useState([] as Group[]);
 
-  // useEffect(() => {
-  //   const fetch = async () => {
-  //     const usersGroups = await GetUsersGroupCommand();
-  //     setGroups(usersGroups);
-  //     setGroupId(usersGroups[0].id);
-  //   };
+  useEffect(() => {
+    const fetch = async () => {
+      const usersGroups = await GetUsersGroupCommand();
+      setGroups(usersGroups);
+      setGroupId(usersGroups[0].id);
+    };
 
-  //   fetch();
-  // }, []);
+    fetch();
+  }, []);
 
   const onSubmit = async (e: React.MouseEvent): Promise<void> => {
     e.preventDefault();
