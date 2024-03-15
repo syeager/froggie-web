@@ -5,7 +5,7 @@ export async function TaskPageCommand(
   size = 100,
   page = 0
 ): Promise<Task[] | null> {
-  const response = await FroggieClient().getTaskPage_GetPage(size, page);
+  const response = await FroggieClient().getTaskPage_GetPage(page, size);
 
   if (!response.isError && response.obj) {
     const tasks = response.obj.results?.map(createTask) ?? null;
