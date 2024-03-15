@@ -1,8 +1,9 @@
 import { Button, Form, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { TaskCreateCommand } from "../commands/taskCreateCommand";
-import { Group, GetUsersGroupCommand } from "@Groups";
 import moment from "moment";
+import { RootState } from "@/froggie/app/state/store";
 
 type Props = {
   onSubmit: () => void;
@@ -12,16 +13,13 @@ export function TaskCreateForm(props: Props): JSX.Element {
   const [title, setTitle] = useState("");
   const [groupId, setGroupId] = useState("");
   const [dueDate, setDueDate] = useState(moment().add(2, "day"));
-  const [groups, setGroups] = useState([] as Group[]);
+
+  const groups = useSelector((state: RootState) => state.groups.groups);
 
   useEffect(() => {
-    const fetch = async () => {
-      const usersGroups = await GetUsersGroupCommand();
-      setGroups(usersGroups);
-      setGroupId(usersGroups[0].id);
-    };
-
-    fetch();
+    if (groups?.length > 0) {
+      setGroupId(groups[0].id);
+    }
   }, []);
 
   const onSubmit = async (e: React.MouseEvent): Promise<void> => {
