@@ -34,7 +34,7 @@ export function TaskList(): JSX.Element {
 
   return (
     <div>
-      <h1 className="text-center">Welcome to Froggie! 🐸</h1>
+      <h2>Tasks</h2>
       <TaskCreateForm />
       <Row className="w-75" xs={1}>
         {taskCards}
