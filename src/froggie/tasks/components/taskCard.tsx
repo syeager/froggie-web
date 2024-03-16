@@ -1,6 +1,6 @@
 import { RootState } from "@/froggie/app/state/store";
 import { Task } from "@Tasks";
-import { Card } from "react-bootstrap";
+import { Badge, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 type Props = {
@@ -13,10 +13,12 @@ export function TaskCard(props: Props): JSX.Element {
   const group = groups.find((g) => g.id == task.groupId);
 
   return (
-    <Card className="w-100">
-      <Card.Header>{task.title}</Card.Header>
+    <Card>
       <Card.Body>
-        <Card.Text>{group?.name}</Card.Text>
+        <Card.Text>{task.title}</Card.Text>
+        <Badge pill bg="primary">
+          {group?.name}
+        </Badge>
       </Card.Body>
     </Card>
   );

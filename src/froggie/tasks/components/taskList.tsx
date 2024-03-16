@@ -1,9 +1,8 @@
 import { Task, TaskCard, TaskPageCommand } from "@Tasks";
 import { useEffect, useState } from "react";
-import { Row } from "react-bootstrap";
-import { ToggleTaskFormModalButton } from "./ToggleTaskFormModalButton";
+import { Stack } from "react-bootstrap";
 
-const updateIntervalMs = 10000;
+const updateIntervalMs = 1000;
 
 export function TaskList(): JSX.Element {
   const [tasks, setTasks] = useState(undefined as undefined | Task[]);
@@ -33,13 +32,5 @@ export function TaskList(): JSX.Element {
     ? tasks.map((task) => <TaskCard key={task.id} task={task} />)
     : [<div key={-1}>loading</div>];
 
-  return (
-    <div>
-      <h2>Tasks</h2>
-      <ToggleTaskFormModalButton />
-      <Row className="w-75" xs={1}>
-        {taskCards}
-      </Row>
-    </div>
-  );
+  return <Stack className="mx-auto">{taskCards}</Stack>;
 }
