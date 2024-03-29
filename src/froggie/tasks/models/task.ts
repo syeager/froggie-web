@@ -4,6 +4,7 @@ export interface Task {
   readonly id: string;
   readonly title: string;
   readonly groupId: string;
+  readonly isCompleted: boolean;
 }
 
 export function createTask(taskDto: Froggie.TaskDto): Task {
@@ -11,5 +12,6 @@ export function createTask(taskDto: Froggie.TaskDto): Task {
     id: taskDto.id,
     title: taskDto.title,
     groupId: taskDto.groupId,
+    isCompleted: taskDto.isCompleted,
   };
 }

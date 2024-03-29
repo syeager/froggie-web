@@ -19,6 +19,7 @@ export function TaskCard(props: Props): JSX.Element {
         <Badge pill bg="primary">
           {group?.name}
         </Badge>
+        <p>{task.isCompleted ? "✅" : "☑️"}</p>
       </Card.Body>
     </Card>
   );
