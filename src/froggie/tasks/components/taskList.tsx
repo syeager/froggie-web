@@ -1,11 +1,15 @@
 import { Task, TaskCard, TaskPageCommand } from "@Tasks";
 import { useEffect, useState } from "react";
 import { Stack } from "react-bootstrap";
+import { TaskDetails } from "./taskDetails";
 
 const updateIntervalMs = 1000;
 
 export function TaskList(): JSX.Element {
   const [tasks, setTasks] = useState(undefined as undefined | Task[]);
+  const [selectedTask, setSelectedTask] = useState(
+    undefined as Task | undefined
+  );
   const [poll, setPoll] = useState(true);
 
   useEffect(() => {
@@ -28,9 +32,25 @@ export function TaskList(): JSX.Element {
     };
   }, []);
 
+  const taskDetails = selectedTask ? (
+    <TaskDetails
+      task={selectedTask}
+      onClose={() => setSelectedTask(undefined)}
+    />
+  ) : (
+    <></>
+  );
+
   const taskCards = tasks
-    ? tasks.map((task) => <TaskCard key={task.id} task={task} />)
+    ? tasks.map((task) => (
+        <TaskCard key={task.id} task={task} onClick={setSelectedTask} />
+      ))
     : [<div key={-1}>loading</div>];
 
-  return <Stack className="mx-auto">{taskCards}</Stack>;
+  return (
+    <>
+      {taskDetails}
+      <Stack className="mx-auto">{taskCards}</Stack>
+    </>
+  );
 }

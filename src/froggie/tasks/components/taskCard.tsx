@@ -1,10 +1,11 @@
 import { RootState } from "@/froggie/app/state/store";
 import { Task } from "@Tasks";
-import { Badge, Card } from "react-bootstrap";
+import { Badge, Button, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 type Props = {
   task: Task;
+  onClick: (task: Task) => void;
 };
 
 export function TaskCard(props: Props): JSX.Element {
@@ -21,6 +22,9 @@ export function TaskCard(props: Props): JSX.Element {
         </Badge>
         <p>{task.isCompleted ? "✅" : "☑️"}</p>
       </Card.Body>
+      <Card.Footer>
+        <Button onClick={() => props.onClick(task)}>View</Button>
+      </Card.Footer>
     </Card>
   );
 }
