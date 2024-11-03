@@ -1,5 +1,5 @@
 import { FroggieClient } from "@/froggie/requests/FroggieClient";
-import { Task, createTask } from "../models/task";
+import { Task, createTask } from "../models/Task";
 import { Froggie } from "@/generated/froggieClient";
 
 export async function CompleteTaskCommand(task: Task): Promise<Task> {

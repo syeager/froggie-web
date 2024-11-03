@@ -1,5 +1,5 @@
 import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
-import { getUser } from "../../accounts";
+import { getUser } from "../../accounts/Index";
 import { NavLink } from "react-router-dom";
 
 export function NavBar(): JSX.Element {

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import { RegisterCommand } from "../commands/registerCommand";
-import { LogInPath } from "@Accounts";
+import { RegisterCommand } from "../commands/RegisterCommand";
+import { LogInPath } from "@/froggie/accounts/Index";
 
 export const RegisterPath = "Register";
 

@@ -1,9 +1,9 @@
 import { Button, Form, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { TaskCreateCommand } from "../commands/taskCreateCommand";
+import { TaskCreateCommand } from "../commands/TaskCreateCommand";
 import moment from "moment";
-import { RootState } from "@/froggie/app/state/store";
+import { RootState } from "@/froggie/app/Store";
 
 type Props = {
   onSubmit: () => void;

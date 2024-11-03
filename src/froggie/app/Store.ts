@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import groupsReducer from "../../groups/store";
+import groupsReducer from "../groups/Store";
 
 export const store = configureStore({
   reducer: {

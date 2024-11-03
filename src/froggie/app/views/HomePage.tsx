@@ -1,5 +1,5 @@
-import { TaskList } from "../../tasks/components/taskList";
-import { CreateGroupForm } from "../../groups/views/createGroupForm";
+import { TaskList } from "../../tasks/components/TaskList";
+import { CreateGroupForm } from "../../groups/views/CreateGroupForm";
 import { Container } from "react-bootstrap";
 
 export function HomePage(): JSX.Element {

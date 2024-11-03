@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import { LogInCommand } from "@Accounts";
+import { LogInCommand } from "@/froggie/accounts/Index";
 import { Link } from "react-router-dom";
-import { RegisterPath } from "@Accounts";
+import { RegisterPath } from "@/froggie/accounts/Index";
 
 export const LogInPath = "LogIn";
 

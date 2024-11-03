@@ -1,7 +1,7 @@
 import { Button, Form, InputGroup, Modal } from "react-bootstrap";
-import { Task } from "../models/task";
+import { Task } from "../models/Task";
 import { useSelector } from "react-redux";
-import { RootState } from "@/froggie/app/state/store";
+import { RootState } from "@/froggie/app/Store";
 import { CompleteTaskCommand } from "../commands/CompleteTaskCommand";
 
 type Props = {

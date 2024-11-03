@@ -1,4 +1,4 @@
-import { User } from "@Accounts";
+import { User } from "@/froggie/accounts/Index";
 
 const accessTokenKey = "account.accessToken";
 const userKey = "acccount.user";

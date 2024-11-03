@@ -1,4 +1,4 @@
-import { setUser } from "@Accounts";
+import { setUser } from "@/froggie/accounts/Index";
 import { FroggieClient } from "@/froggie/requests/FroggieClient";
 import { Froggie } from "@Api";
 

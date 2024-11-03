@@ -1,5 +1,5 @@
 import { FroggieClient } from "@/froggie/requests/FroggieClient";
-import { createTask, Task } from "@Tasks";
+import { createTask, Task } from "@/froggie/tasks/Index";
 
 export async function TaskPageCommand(
   size = 100,

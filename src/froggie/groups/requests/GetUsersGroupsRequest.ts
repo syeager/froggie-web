@@ -1,4 +1,4 @@
-import { FroggieRequest } from "@/froggie/requests";
+import { FroggieRequest } from "@/froggie/requests/Index";
 import { Froggie } from "@/generated/froggieClient";
 
 export class GetUsersGroupRequest extends FroggieRequest<Froggie.ApiResponseOfGroupDtoOf> {

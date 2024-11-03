@@ -1,11 +1,11 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import { LogInPage, LogInPath, RegisterPage, RegisterPath } from "@Accounts";
+import { LogInPage, LogInPath, RegisterPage, RegisterPath } from "@/froggie/accounts/Index";
 import { HomePage } from "./views/HomePage";
 import { useEffect } from "react";
-import { AppDispatch } from "@/froggie/app/state/store";
+import { AppDispatch } from "@/froggie/app/Store";
 import { useDispatch } from "react-redux";
-import { getUsersGroupsAsync } from "@/froggie/groups/store";
+import { getUsersGroupsAsync } from "@/froggie/groups/Store";
 import { ManageGroupsPage } from "../groups/views/ManageGroupsPage";
 import { Layout } from "./views/Layout";
 

@@ -1,8 +1,8 @@
 import { Froggie } from "@Api";
-export { FroggieRequest } from "./froggieRequest";
-import { FroggieRequestManager } from "./froggieRequestManager";
-import { LogInPath } from "@Accounts";
-import { getAccessToken } from "../accounts/stores/accountStore";
+export { FroggieRequest } from "./FroggieRequest";
+import { FroggieRequestManager } from "./FroggieRequestManager";
+import { LogInPath } from "@/froggie/accounts/Index";
+import { getAccessToken } from "../accounts/stores/AccountStore";
 
 const client = new Froggie.Client();
 

@@ -1,6 +1,6 @@
-import { getUser } from "@Accounts";
+import { getUser } from "@/froggie/accounts/Index";
 import { Froggie } from "@Api";
-import { createTask, Task } from "@Tasks";
+import { createTask, Task } from "@/froggie/tasks/Index";
 import { FroggieClient } from "@/froggie/requests/FroggieClient";
 
 export async function TaskCreateCommand(

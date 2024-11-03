@@ -1,6 +1,6 @@
 import { Froggie } from "@Api";
-import { getUser } from "@Accounts";
-import { Group, createGroup } from "@Groups";
+import { getUser } from "@/froggie/accounts/Index";
+import { Group, createGroup } from "@/froggie/groups/Index";
 import { FroggieClient } from "@/froggie/requests/FroggieClient";
 
 export async function CreateGroupCommand(name: string): Promise<Group | null> {

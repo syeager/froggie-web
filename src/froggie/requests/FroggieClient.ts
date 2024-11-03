@@ -1,5 +1,5 @@
 import { Froggie } from "@/generated/froggieClient";
-import { getAccessToken } from "@Accounts";
+import { getAccessToken } from "@/froggie/accounts/Index";
 
 export function FroggieClient(): Froggie.Client {
   const client = new Froggie.Client();

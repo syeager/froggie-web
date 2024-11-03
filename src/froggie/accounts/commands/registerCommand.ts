@@ -1,5 +1,5 @@
 import { Froggie } from "@Api";
-import { setUser } from "@Accounts";
+import { setUser } from "@/froggie/accounts/Index";
 import { FroggieClient } from "@/froggie/requests/FroggieClient";
 
 export async function RegisterCommand(

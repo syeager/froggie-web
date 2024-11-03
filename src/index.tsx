@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./froggie/app";
+import App from "./froggie/app/Index";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
-import { store } from "./froggie/app/state/store";
+import { store } from "./froggie/app/Store";
 
 ReactDOM.render(
   <React.StrictMode>

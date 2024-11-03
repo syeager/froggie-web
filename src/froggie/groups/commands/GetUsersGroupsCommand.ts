@@ -1,7 +1,7 @@
-import { RequestManager } from "@/froggie/requests";
+import { RequestManager } from "@/froggie/requests/Index";
 import { Froggie } from "@Api";
-import { getUser } from "@Accounts";
-import { Group, GetUsersGroupRequest, createGroup } from "@Groups";
+import { getUser } from "@/froggie/accounts/Index";
+import { Group, GetUsersGroupRequest, createGroup } from "@/froggie/groups/Index";
 
 export async function GetUsersGroupCommand(): Promise<Array<Group>> {
   const userId = getUser()!.id;

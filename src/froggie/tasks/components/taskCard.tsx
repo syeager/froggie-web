@@ -1,5 +1,5 @@
-import { RootState } from "@/froggie/app/state/store";
-import { Task } from "@Tasks";
+import { RootState } from "@/froggie/app/Store";
+import { Task } from "@/froggie/tasks/Index";
 import { Badge, Button, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 

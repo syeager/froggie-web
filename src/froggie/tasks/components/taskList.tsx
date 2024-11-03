@@ -1,7 +1,7 @@
-import { Task, TaskCard, TaskPageCommand } from "@Tasks";
+import { Task, TaskCard, TaskPageCommand } from "@/froggie/tasks/Index";
 import { useEffect, useState } from "react";
 import { Stack } from "react-bootstrap";
-import { TaskDetails } from "./taskDetails";
+import { TaskDetails } from "./TaskDetails";
 
 const updateIntervalMs = 1000;
 

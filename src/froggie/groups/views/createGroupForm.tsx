@@ -1,6 +1,6 @@
 import { Button, Form, Row } from "react-bootstrap";
 import { useState } from "react";
-import { CreateGroupCommand } from "@Groups";
+import { CreateGroupCommand } from "@/froggie/groups/Index";
 
 export function CreateGroupForm(): JSX.Element {
   const [name, setName] = useState("");
